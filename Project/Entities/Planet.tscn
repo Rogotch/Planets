@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Project/Scripts/AreaScript.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://Project/Scripts/Planet.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 75.0
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 300.0
+
+[node name="Planet" type="RigidBody2D"]
+collision_mask = 3
+mode = 1
+contact_monitor = true
+script = ExtResource( 3 )
+_GravitationShape = NodePath("GravArea/GravShape")
+_PlanetShape = NodePath("PlanetShape")
+radius = 100
+
+[node name="PlanetShape" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="PlanetSprite" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="GravArea" type="Area2D" parent="."]
+script = ExtResource( 1 )
+_Owner = NodePath("..")
+
+[node name="GravShape" type="CollisionShape2D" parent="GravArea"]
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="." to="." method="_on_Planet_body_entered"]
