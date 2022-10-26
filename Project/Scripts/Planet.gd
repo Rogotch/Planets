@@ -17,17 +17,26 @@ var planet_particles
 
 var type = Global.obj_type.PLANET
 var grav_circle
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	grav_circle = GravitationShape.shape
 	grav_circle.radius = radius
 	planet_radius = PlanetShape.shape.radius
+	
 	planet_particles = Planet_particles.new()
 	add_child(planet_particles)
-	planet_particles.amount = planet_radius/2
+	planet_particles.amount = planet_radius
 	planet_particles.radius = radius
 	planet_particles.inner_radius = planet_radius
+	rng.randomize()
+	var _sign_id = rng.randi()%2
+	var tang_accel = 0.1 * radius * gravity_strength * (-1 if _sign_id == 0 else 1) 
+	print(tang_accel)
+	planet_particles.radial_accel = -100 * gravity_strength
+	planet_particles.tangential_accel = tang_accel
+	planet_particles.orbit_velocity   = tang_accel / 200
 	pass # Replace with function body.
 
 

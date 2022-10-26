@@ -24,17 +24,25 @@ func _physics_process(delta):
 #	print(final_velocity)
 	on_ground = false
 	var collision = move_and_collide(final_velocity * delta)
+#	var collision = false
+#	move_and_slide(final_velocity, Vector2.UP)
 	var grav_dir = GetGravDirection()
+#	for i in get_slide_count():
+#		print("", get_slide_collision(i))
 	if collision:
 		if collision.collider_shape.get_parent().type == Global.obj_type.PLANET:
 			on_ground = true
 		final_velocity = grav_dir + get_input().rotated(grav_dir.angle() - 90 * PI/180) * 10
 		rotation = grav_dir.angle()
+#		else:
+#			print("Collision with meteor")
+#			final_velocity = grav_dir * gravitation + get_input() + (position - collision.collider_shape.get_parent().global_position)
 #		print(grav_dir.angle())
 	else:
 		final_velocity += grav_dir * gravitation + get_input()
-		final_velocity *= 0.98
+#		final_velocity *= 0.98
 		rotation = lerp_angle(rotation, final_velocity.angle(), 0.04)
+	$Node2D.global_rotation = grav_dir.angle()
 	pass
 
 
@@ -62,14 +70,18 @@ func get_input() -> Vector2:
 	return velocity
 	pass
 
+func asteroid_push(force):
+	final_velocity -= force
+	pass
+
 func _on_GravArea_area_entered(area):
-	if area.Type == Global.AreaType.GRAV:
+	if area.get("Type") != null && area.Type == Global.AreaType.GRAV:
 		planets.append(area.Owner)
 	pass # Replace with function body.
 
 
 func _on_GravArea_area_exited(area):
-	if planets.has(area.Owner):
+	if area.get("Type") != null && planets.has(area.Owner):
 		planets.erase(area.Owner)
 	pass # Replace with function body.
 

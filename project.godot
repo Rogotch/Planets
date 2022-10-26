@@ -9,23 +9,34 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "AsteroidSpawner",
+"language": "GDScript",
+"path": "res://Project/Scripts/MeteorSpawner.gd"
+}, {
 "base": "Particles2D",
 "class": "Planet_particles",
 "language": "GDScript",
 "path": "res://Project/Scripts/PlanetsParticles.gd"
 } ]
 _global_script_class_icons={
+"AsteroidSpawner": "",
 "Planet_particles": ""
 }
 
 [application]
 
 config/name="Planets"
+run/main_scene="res://Project/Scenes/MainScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Global="*res://Project/Scripts/Global/Global.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/rogotch_spriteslice/plugin.cfg" )
 
 [input]
 
