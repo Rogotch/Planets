@@ -3,11 +3,13 @@ extends Node2D
 
 class_name AsteroidSpawner
 
+export (bool) var spawn_flag = false
 export (float, 1.0, 500, 0.1) var Radius = 1.0 setget set_radius
 export (float, -360.0, 360.0, 0.1) var Direction = 0.0 setget set_direction
 export (Global.SpawnerShape) var _Shape setget set_shape
 export (int, 0, 200, 1) var speed_modify_min = 1
 export (int, 0, 200, 1) var speed_modify_max = 100
+export (float, 0.0, 100.0, 0.1) var life_time = 10.0
 export (int) var spawn_count = 10
 export (float, 0.0, 10.0, 0.1) var spawn_yield_time = 1.0
 export (bool) var group_spawn = false
@@ -28,7 +30,7 @@ func _ready():
 	spawn_timer.one_shot = true
 	spawn_timer.autostart = false
 	spawn_timer.connect("timeout", self, "spawn")
-	if !Engine.editor_hint:
+	if !Engine.editor_hint && spawn_flag:
 		spawn()
 #	yield(get_tree().create_timer(1), "timeout")
 #	for i in spawn_count:
@@ -75,6 +77,8 @@ func set_direction(value):
 	pass
 
 func spawn_asteroid():
+	if !spawn_flag:
+		return
 	var spawn_position = Vector2.ZERO
 	
 	var new_asteroid = asteroid_class.instance()
@@ -102,11 +106,12 @@ func spawn_asteroid():
 	var direction = Vector2(cos(angle), sin(angle))
 	
 	var speed_modify = rng.randi_range(speed_modify_min, speed_modify_max)
-	prints("speed_modify", speed_modify)
+#	prints("speed_modify", speed_modify)
 	
 	new_asteroid.add_force(Vector2.ZERO, direction*(speed_modify))
 	rng.randomize()
 	new_asteroid.add_torque(rng.randi_range(-100, 100))
+	new_asteroid.life_timer.start(life_time)
 	spawned_counter += 1
 	pass
 

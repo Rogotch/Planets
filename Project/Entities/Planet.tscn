@@ -1,14 +1,20 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Project/Scripts/AreaScript.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Project/Scripts/Planet.gd" type="Script" id=3]
+[ext_resource path="res://Project/Images/planets/Parts/light2.png" type="Texture" id=4]
+[ext_resource path="res://Project/Images/planets/Parts/noise08.png" type="Texture" id=5]
+[ext_resource path="res://Project/Images/planets/Parts/sphere1.png" type="Texture" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 75.0
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 300.0
+
+[sub_resource type="CanvasItemMaterial" id=3]
+blend_mode = 2
 
 [node name="Planet" type="RigidBody2D"]
 collision_mask = 3
@@ -17,12 +23,16 @@ contact_monitor = true
 script = ExtResource( 3 )
 _GravitationShape = NodePath("GravArea/GravShape")
 _PlanetShape = NodePath("PlanetShape")
+_PlanetSphere = NodePath("Sphere1")
+_PlanetLight = NodePath("Sphere1/Light2")
+_PlanetNoise = NodePath("Sphere1/Noise08")
 radius = 100
 
 [node name="PlanetShape" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="PlanetSprite" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 
@@ -32,5 +42,17 @@ _Owner = NodePath("..")
 
 [node name="GravShape" type="CollisionShape2D" parent="GravArea"]
 shape = SubResource( 2 )
+
+[node name="Sphere1" type="Sprite" parent="."]
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 6 )
+
+[node name="Noise08" type="Sprite" parent="Sphere1"]
+texture = ExtResource( 5 )
+
+[node name="Light2" type="Sprite" parent="Sphere1"]
+modulate = Color( 1, 1, 1, 0.415686 )
+material = SubResource( 3 )
+texture = ExtResource( 4 )
 
 [connection signal="body_entered" from="." to="." method="_on_Planet_body_entered"]
