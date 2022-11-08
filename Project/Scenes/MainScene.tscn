@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Project/Entities/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Project/Entities/Planet.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Project/Shaders/shockwave.tres" type="Shader" id=6]
 [ext_resource path="res://Project/Scripts/player_camera_script.gd" type="Script" id=7]
 [ext_resource path="res://Project/Images/VFX/magic_03.png" type="Texture" id=8]
+[ext_resource path="res://Project/Images/planets/Sample.png" type="Texture" id=9]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 5 )
@@ -100,3 +101,8 @@ position = Vector2( 140, 33 )
 _Mark = NodePath("../Sprite2")
 jump_force = 3.5
 ground_force = 2.0
+
+[node name="Sprite3" type="Sprite" parent="."]
+texture = ExtResource( 9 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Sprite3"]
